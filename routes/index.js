@@ -35,16 +35,13 @@ passport.use(new LocalStrategy({
       if (!user) {
         return done(null, false,req.flash('message','Incorrect Username'));
       }
-      password.compare(password,user.password,(err,result)=>{
-        if(err){return done(err)}
-        else if(result)
-        return done(null, user);
-        else{
-          return done(null, false,req.flash('message','Incorrect Password'));
-        }
+    if(password==='user.password'){
+      return done(null,user)
+    }
+      else{
+              return done(null, false,req.flash('message','Incorrect password'));
 
-
-      })
+      }
     });
   }
 ));
