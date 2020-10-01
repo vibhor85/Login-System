@@ -29,20 +29,18 @@ router.use(passport.session());
 passport.use(new LocalStrategy({
   passReqToCallback:true
 },
-  function(req,username, password, done) {
-    User.findOne({ username: username }, function(err, user) {
-      if (err) { return done(err); }
-      if (!user) {
-        return done(null, false,req.flash('message','Incorrect Username'));
-      }
-    if(password===user.password){
-      return done(null,user)
-    }
-      else{
-              return done(null, false,req.flash('message','Incorrect password'));
-
-      }
-    });
+  function(req,username, password, cb) {
+    User.findOne({username})
+    .then(user=>{
+    if(!user)return cb(null,req.flash('message','Incorrect Username'));
+    bcrypt.compare(user.password,password)
+    .then(isCorrect=>{
+      if(isCorrect)return cb(null,user);
+      else return cb(null,req.flash('message','Incorrect Password'));
+    })
+    .catch(err=>console.log(err));
+    })
+    .catch(err=>console.log(err));
   }
 ));
 passport.serializeUser(function(user, done) {
