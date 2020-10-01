@@ -1,7 +1,7 @@
 require('dotenv').config()
 var express = require('express');
 var mongoose = require('mongoose');
-var bcrypt = require('bcrypt'); 
+var bcrypt = require('bcrypt');
 var flash = require('express-flash')
 var session = require('express-session')
 const passport = require('passport');
@@ -35,7 +35,7 @@ passport.use(new LocalStrategy({
       if (!user) {
         return done(null, false,req.flash('message','Incorrect Username'));
       }
-    if(password==='user.password'){
+    if(password===user.password){
       return done(null,user)
     }
       else{
@@ -105,7 +105,7 @@ router.post('/',checkNotAuth,async (req,res,next)=>{
     req.flash('success',"You have successfully Registered");
 
     res.redirect('login');
-     
+
   }
   catch(err){
     err=>console.log(err)
