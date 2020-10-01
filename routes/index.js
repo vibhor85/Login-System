@@ -39,6 +39,11 @@ passport.use(new LocalStrategy({
       else return cb(null,req.flash('message','Incorrect Password'));
     })
     .catch(err=>console.log(err));
+
+    // IDEA: Alternative is to use toString() method
+    // if(user.password.toString()===password.toString())return cb(null,user);
+    // return cb(null,req.flash('message','Incorrect Password'));
+
     })
     .catch(err=>console.log(err));
   }
